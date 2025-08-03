@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal Calculator Widget - Documentation & Integration Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+            margin-bottom: 40px;
+            border-radius: 10px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .main-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .sidebar {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section h2 {
+            color: #2d3748;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .section h3 {
+            color: #4a5568;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            margin-top: 25px;
+        }
+
+        .section h4 {
+            color: #718096;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            margin-top: 20px;
+        }
+
+        .code-block {
+            background: #1a202c;
+            color: #f7fafc;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 4px solid #667eea;
+        }
+
+        .inline-code {
+            background: #e2e8f0;
+            color: #2d3748;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .api-endpoint {
+            background: #e6fffa;
+            border: 1px solid #81e6d9;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .api-endpoint .method {
+            background: #38b2ac;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.8em;
+            margin-right: 10px;
+        }
+
+        .parameter-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .parameter-table th,
+        .parameter-table td {
+            text-align: left;
+            padding: 12px 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .parameter-table th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+
+        .parameter-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .required {
+            color: #e53e3e;
+            font-weight: bold;
+        }
+
+        .optional {
+            color: #38a169;
+            font-weight: bold;
+        }
+
+        .nav-menu {
+            margin-bottom: 30px;
+        }
+
+        .nav-menu h3 {
+            margin-bottom: 15px;
+            color: #2d3748;
+        }
+
+        .nav-menu ul {
+            list-style: none;
+        }
+
+        .nav-menu li {
+            margin-bottom: 8px;
+        }
+
+        .nav-menu a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-menu a:hover {
+            color: #5a67d8;
+            text-decoration: underline;
+        }
+
+        .demo-container {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px dashed #cbd5e0;
+            margin: 20px 0;
+        }
+
+        .note {
+            background: #fef5e7;
+            border-left: 4px solid #f6ad55;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning {
+            background: #fed7d7;
+            border-left: 4px solid #fc8181;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .success {
+            background: #c6f6d5;
+            border-left: 4px solid #68d391;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .sidebar {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Legal Calculator Widget</h1>
+            <p>Property Transfer Cost Calculator for Namibia - Integration Guide & Documentation</p>
+        </div>
+
+        <div class="content">
+            <div class="main-content">
+                <div class="section" id="overview">
+                    <h2>Overview</h2>
+                    <p>The Legal Calculator Widget is a JavaScript component that allows you to integrate property transfer cost calculations directly into your website. It provides an easy-to-use interface for calculating transfer costs based on Namibian property law.</p>
+                    
+                    <h3>Features</h3>
+                    <ul>
+                        <li>📊 Accurate transfer cost calculations for Namibian properties</li>
+                        <li>🎨 Customizable styling with light and dark themes</li>
+                        <li>📱 Responsive design that works on all devices</li>
+                        <li>⚡ Fast API integration with real-time calculations</li>
+                        <li>🔧 Easy integration with just a few lines of code</li>
+                        <li>🌍 Support for both sandbox and live environments</li>
+                    </ul>
+                </div>
+
+                <div class="section" id="quick-start">
+                    <h2>Quick Start</h2>
+                    <p>Get started with the Legal Calculator Widget in under 5 minutes:</p>
+
+                    <h3>1. Include the Widget Script</h3>
+                    <div class="code-block">
+&lt;script src="https://your-bucket-url.s3.amazonaws.com/legal-calculator-widget.js"&gt;&lt;/script&gt;
+                    </div>
+
+                    <h3>2. Create a Container</h3>
+                    <div class="code-block">
+&lt;div id="legal-calculator"&gt;&lt;/div&gt;
+                    </div>
+
+                    <h3>3. Initialize the Widget</h3>
+                    <div class="code-block">
+&lt;script&gt;
+document.addEventListener('DOMContentLoaded', function() {
+    new LegalCalculatorWidget('legal-calculator', {
+        apiUrl: 'https://your-api-gateway-url.execute-api.region.amazonaws.com/sandbox/calculate',
+        theme: 'light',
+        currency: 'N$'
+    });
+});
+&lt;/script&gt;
+                    </div>
+
+                    <div class="success">
+                        <strong>That's it!</strong> Your calculator is now ready to use.
+                    </div>
+                </div>
+
+                <div class="section" id="api-reference">
+                    <h2>API Reference</h2>
+                    
+                    <div class="api-endpoint">
+                        <span class="method">POST</span>
+                        <code>/calculate</code>
+                    </div>
+
+                    <h3>Request Parameters</h3>
+                    <table class="parameter-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Required</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>amount</code></td>
+                                <td>Number</td>
+                                <td><span class="required">Required</span></td>
+                                <td>Property value in Namibian Dollars</td>
+                            </tr>
+                            <tr>
+                                <td><code>sub_type</code></td>
+                                <td>String</td>
+                                <td><span class="required">Required</span></td>
+                                <td>Property type: "S" (Sectional Title) or "F" (Freehold)</td>
+                            </tr>
+                            <tr>
+                                <td><code>dutytype</code></td>
+                                <td>String</td>
+                                <td><span class="required">Required</span></td>
+                                <td>Duty type: "N" (Normal/Residential), "A" (Agricultural), "C" (Commercial)</td>
+                            </tr>
+                            <tr>
+                                <td><code>date</code></td>
+                                <td>String</td>
+                                <td><span class="required">Required</span></td>
+                                <td>Transfer date: "before" (before Oct 1, 2024) or "after" (from Oct 1, 2024)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>Response Format</h3>
+                    <div class="code-block">
+{
+  "transferFees": 12000.00,
+  "vatOnFees": 1800.00,
+  "transferDuty": 5000.00,
+  "stampDuty": 1200.00,
+  "deedsOfficeFee": 400.00,
+  "sundriesPostagesVAT": 1265.00,
+  "total": 21665.00
+}
+                    </div>
+                </div>
+
+                <div class="section" id="configuration">
+                    <h2>Configuration Options</h2>
+                    
+                    <table class="parameter-table">
+                        <thead>
+                            <tr>
+                                <th>Option</th>
+                                <th>Type</th>
+                                <th>Default</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>apiUrl</code></td>
+                                <td>String</td>
+                                <td>sandbox URL</td>
+                                <td>API endpoint URL</td>
+                            </tr>
+                            <tr>
+                                <td><code>theme</code></td>
+                                <td>String</td>
+                                <td>'light'</td>
+                                <td>'light' or 'dark'</td>
+                            </tr>
+                            <tr>
+                                <td><code>currency</code></td>
+                                <td>String</td>
+                                <td>'N$'</td>
+                                <td>Currency symbol to display</td>
+                            </tr>
+                            <tr>
+                                <td><code>loadingText</code></td>
+                                <td>String</td>
+                                <td>'Calculating...'</td>
+                                <td>Loading message text</td>
+                            </tr>
+                            <tr>
+                                <td><code>errorText</code></td>
+                                <td>String</td>
+                                <td>'Error calculating costs. Please try again.'</td>
+                                <td>Default error message</td>
+                            </tr>
+                            <tr>
+                                <td><code>containerClass</code></td>
+                                <td>String</td>
+                                <td>'legal-calc-widget'</td>
+                                <td>CSS class for the main container</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="section" id="styling">
+                    <h2>Styling & Customization</h2>
+                    
+                    <h3>Built-in Themes</h3>
+                    <p>The widget comes with two built-in themes:</p>
+                    
+                    <h4>Light Theme (Default)</h4>
+                    <div class="code-block">
+new LegalCalculatorWidget('calculator', {
+    theme: 'light'
+});
+                    </div>
+
+                    <h4>Dark Theme</h4>
+                    <div class="code-block">
+new LegalCalculatorWidget('calculator', {
+    theme: 'dark'
+});
+                    </div>
+
+                    <h3>Custom Styling</h3>
+                    <p>You can override the default styles by targeting the widget's CSS classes:</p>
+                    
+                    <div class="code-block">
+/* Custom styling example */
+.legal-calc-widget {
+    border: 2px solid #your-brand-color;
+    border-radius: 15px;
+    font-family: 'Your Custom Font', sans-serif;
+}
+
+.legal-calc-widget .calc-button {
+    background: #your-brand-color;
+    border-radius: 25px;
+}
+
+.legal-calc-widget .calc-header h3 {
+    color: #your-brand-color;
+}
+                    </div>
+
+                    <h3>CSS Classes Reference</h3>
+                    <table class="parameter-table">
+                        <thead>
+                            <tr>
+                                <th>Class</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>.legal-calc-widget</code></td>
+                                <td>Main widget container</td>
+                            </tr>
+                            <tr>
+                                <td><code>.calc-header</code></td>
+                                <td>Widget header section</td>
+                            </tr>
+                            <tr>
+                                <td><code>.calc-form</code></td>
+                                <td>Form container</td>
+                            </tr>
+                            <tr>
+                                <td><code>.form-group</code></td>
+                                <td>Individual form field container</td>
+                            </tr>
+                            <tr>
+                                <td><code>.calc-button</code></td>
+                                <td>Submit button</td>
+                            </tr>
+                            <tr>
+                                <td><code>.calc-results</code></td>
+                                <td>Results display container</td>
+                            </tr>
+                            <tr>
+                                <td><code>.result-row</code></td>
+                                <td>Individual result row</td>
+                            </tr>
+                            <tr>
+                                <td><code>.result-row.total</code></td>
+                                <td>Total cost row</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="section" id="examples">
+                    <h2>Integration Examples</h2>
+                    
+                    <h3>WordPress Integration</h3>
+                    <div class="code-block">
+// Add to your theme's functions.php
+function add_legal_calculator_scripts() {
+    wp_enqueue_script('legal-calculator', 
+        'https://your-bucket-url.s3.amazonaws.com/legal-calculator-widget.js');
+}
+add_action('wp_enqueue_scripts', 'add_legal_calculator_scripts');
+
+// Use in posts/pages with shortcode
+function legal_calculator_shortcode($atts) {
+    $atts = shortcode_atts(array(
+        'theme' => 'light',
+        'api_url' => 'your-api-url'
+    ), $atts);
+    
+    $id = 'legal-calc-' . uniqid();
+    
+    return '&lt;div id="' . $id . '"&gt;&lt;/div&gt;
+            &lt;script&gt;
+            document.addEventListener("DOMContentLoaded", function() {
+                new LegalCalculatorWidget("' . $id . '", {
+                    theme: "' . $atts['theme'] . '",
+                    apiUrl: "' . $atts['api_url'] . '"
+                });
+            });
+            &lt;/script&gt;';
+}
+add_shortcode('legal_calculator', 'legal_calculator_shortcode');
+
+// Usage: [legal_calculator theme="dark"]
+                    </div>
+
+                    <h3>React Integration</h3>
+                    <div class="code-block">
+import { useEffect, useRef } from 'react';
+
+function LegalCalculator({ theme = 'light', apiUrl }) {
+    const containerRef = useRef(null);
+    const widgetRef = useRef(null);
+
+    useEffect(() => {
+        if (containerRef.current && window.LegalCalculatorWidget) {
+            widgetRef.current = new window.LegalCalculatorWidget(
+                containerRef.current.id,
+                { theme, apiUrl }
+            );
+        }
+
+        return () => {
+            if (widgetRef.current) {
+                // Cleanup if needed
+            }
+        };
+    }, [theme, apiUrl]);
+
+    return &lt;div id="legal-calc-react" ref={containerRef}&gt;&lt;/div&gt;;
+}
+
+export default LegalCalculator;
+                    </div>
+
+                    <h3>Vue.js Integration</h3>
+                    <div class="code-block">
+&lt;template&gt;
+  &lt;div :id="containerId"&gt;&lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+export default {
+  name: 'LegalCalculator',
+  props: {
+    theme: {
+      type: String,
+      default: 'light'
+    },
+    apiUrl: {
+      type: String,
+      required: true
+    }
+  },
+  data() {
+    return {
+      containerId: 'legal-calc-' + Math.random().toString(36).substr(2, 9),
+      widget: null
+    };
+  },
+  mounted() {
+    this.widget = new LegalCalculatorWidget(this.containerId, {
+      theme: this.theme,
+      apiUrl: this.apiUrl
+    });
+  },
+  beforeDestroy() {
+    // Cleanup if needed
+  }
+};
+&lt;/script&gt;
+                    </div>
+                </div>
+
+                <div class="section" id="environments">
+                    <h2>Environments</h2>
+                    
+                    <h3>Sandbox Environment</h3>
+                    <p>Use the sandbox environment for testing and development:</p>
+                    <div class="code-block">
+apiUrl: 'https://your-api-gateway-url.execute-api.region.amazonaws.com/sandbox/calculate'
+                    </div>
+                    
+                    <h3>Live Environment</h3>
+                    <p>Use the live environment for production:</p>
+                    <div class="code-block">
+apiUrl: 'https://your-api-gateway-url.execute-api.region.amazonaws.com/live/calculate'
+                    </div>
+
+                    <div class="warning">
+                        <strong>Important:</strong> Make sure to switch to the live environment URL when deploying to production.
+                    </div>
+                </div>
+
+                <div class="section" id="troubleshooting">
+                    <h2>Troubleshooting</h2>
+                    
+                    <h3>Common Issues</h3>
+                    
+                    <h4>Widget not displaying</h4>
+                    <ul>
+                        <li>Check that the script is loaded before initializing the widget</li>
+                        <li>Ensure the container element exists in the DOM</li>
+                        <li>Check browser console for JavaScript errors</li>
+                    </ul>
+                    
+                    <h4>API errors</h4>
+                    <ul>
+                        <li>Verify the API URL is correct</li>
+                        <li>Check CORS settings on your API Gateway</li>
+                        <li>Ensure all required parameters are being sent</li>
+                    </ul>
+                    
+                    <h4>Styling issues</h4>
+                    <ul>
+                        <li>Check for CSS conflicts with existing stylesheets</li>
+                        <li>Use more specific CSS selectors to override styles</li>
+                        <li>Ensure the theme parameter is set correctly</li>
+                    </ul>
+
+                    <h3>Debug Mode</h3>
+                    <p>Enable debug mode to see detailed error messages:</p>
+                    <div class="code-block">
+new LegalCalculatorWidget('calculator', {
+    apiUrl: 'your-api-url',
+    debug: true
+});
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="nav-menu">
+                    <h3>Quick Navigation</h3>
+                    <ul>
+                        <li><a href="#overview">Overview</a></li>
+                        <li><a href="#quick-start">Quick Start</a></li>
+                        <li><a href="#api-reference">API Reference</a></li>
+                        <li><a href="#configuration">Configuration</a></li>
+                        <li><a href="#styling">Styling</a></li>
+                        <li><a href="#examples">Examples</a></li>
+                        <li><a href="#environments">Environments</a></li>
+                        <li><a href="#troubleshooting">Troubleshooting</a></li>
+                        <li><a href="#demo">Live Demo</a></li>
+                    </ul>
+                </div>
+
+                <div class="note">
+                    <strong>Need Help?</strong><br>
+                    For technical support or questions, please contact our development team.
+                </div>
+
+                <div class="success">
+                    <strong>Pro Tip:</strong><br>
+                    Test your integration in the sandbox environment before going live.
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="demo">
+            <h2>Live Demo</h2>
+            <p>Try out the calculator below to see how it works:</p>
+            
+            <div class="demo-container">
+                <div id="demo-calculator"></div>
+            </div>
+            
+            <h3>Dark Theme Example</h3>
+            <div class="demo-container" style="background: #2d3748;">
+                <div id="demo-calculator-dark"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include the widget script -->
+    <script src="widget/legal-calculator-widget.js"></script>
+    
+    <!-- Initialize demo widgets -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Light theme demo
+            new LegalCalculatorWidget('demo-calculator', {
+                apiUrl: 'https://your-api-gateway-url.execute-api.region.amazonaws.com/sandbox/calculate',
+                theme: 'light'
+            });
+            
+            // Dark theme demo
+            new LegalCalculatorWidget('demo-calculator-dark', {
+                apiUrl: 'https://your-api-gateway-url.execute-api.region.amazonaws.com/sandbox/calculate',
+                theme: 'dark'
+            });
+        });
+    </script>
+</body>
+</html> 

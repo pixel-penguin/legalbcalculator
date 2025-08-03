@@ -1,0 +1,58 @@
+{
+  "name": "legal-calculator",
+  "version": "1.0.0",
+  "description": "Property Transfer Cost Calculator for Namibia - AWS SAM Application",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "sam build",
+    "deploy:sandbox": "./deploy.sh sandbox",
+    "deploy:live": "./deploy.sh live",
+    "deploy:custom": "./deploy.sh live calculator.yourdomain.com api.yourdomain.com",
+    "test": "npm run test:unit",
+    "test:unit": "jest",
+    "test:integration": "newman run tests/integration.postman_collection.json",
+    "local": "sam local start-api",
+    "logs": "sam logs -n TransferCostCalculatorFunction --stack-name legal-calculator-sandbox --tail",
+    "validate": "sam validate",
+    "lint": "eslint src/ widget/ cache-invalidation/",
+    "format": "prettier --write src/ widget/ cache-invalidation/ *.js *.json",
+    "invalidate:sandbox": "aws cloudfront create-invalidation --distribution-id $(aws cloudformation describe-stacks --stack-name legal-calculator-sandbox --query 'Stacks[0].Outputs[?OutputKey==`StaticDistributionId`].OutputValue' --output text) --paths '/*'",
+    "invalidate:live": "aws cloudfront create-invalidation --distribution-id $(aws cloudformation describe-stacks --stack-name legal-calculator-live --query 'Stacks[0].Outputs[?OutputKey==`StaticDistributionId`].OutputValue' --output text) --paths '/*'"
+  },
+  "keywords": [
+    "legal",
+    "calculator",
+    "namibia",
+    "property",
+    "transfer",
+    "costs",
+    "aws",
+    "sam",
+    "lambda",
+    "api-gateway",
+    "widget",
+    "javascript"
+  ],
+  "author": "Your Company Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/legalbcalculator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/legalbcalculator/issues"
+  },
+  "homepage": "https://github.com/your-username/legalbcalculator#readme",
+  "devDependencies": {
+    "eslint": "^8.0.0",
+    "jest": "^29.0.0",
+    "newman": "^5.0.0",
+    "prettier": "^2.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "sam": {
+    "version": "1.0.0"
+  }
+} 
