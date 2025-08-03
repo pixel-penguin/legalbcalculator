@@ -276,7 +276,7 @@
 
                     <h3>1. Include the Widget Script</h3>
                     <div class="code-block">
-&lt;script src="https://legalbcalculator.s3.amazonaws.com/legal-calculator-widget.js"&gt;&lt;/script&gt;
+&lt;script src="https://dj4tpjdnz6wyx.cloudfront.net/legal-calculator-widget.js"&gt;&lt;/script&gt;
                     </div>
 
                     <h3>2. Create a Container</h3>
@@ -314,7 +314,7 @@
     &lt;div id="calculator-widget-transfer-cost-calculator"&gt;&lt;/div&gt;
     
     &lt;!-- Include the widget script --&gt;
-    &lt;script src="https://legalbcalculator.s3.amazonaws.com/legal-calculator-widget.js"&gt;&lt;/script&gt;
+    &lt;script src="https://dj4tpjdnz6wyx.cloudfront.net/legal-calculator-widget.js"&gt;&lt;/script&gt;
     
     &lt;!-- Optional: Include jsPDF for PDF downloads --&gt;
     &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"&gt;&lt;/script&gt;
@@ -449,7 +449,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     <h3>PDF Generation</h3>
                     <p>When jsPDF is included, users can download their calculation results as a professional PDF document including:</p>
                     <ul>
-                        <li>Company logo and branding</li>
                         <li>Complete cost breakdown</li>
                         <li>Input parameters used</li>
                         <li>Legal disclaimer</li>
@@ -467,7 +466,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // Add to your theme's functions.php
 function add_transfer_calculator_scripts() {
     wp_enqueue_script('transfer-calculator', 
-        'https://legalbcalculator.s3.amazonaws.com/legal-calculator-widget.js', 
+        'https://dj4tpjdnz6wyx.cloudfront.net/legal-calculator-widget.js', 
         array(), '1.0.0', true);
     
     // Optional: Add jsPDF for PDF functionality
@@ -490,7 +489,7 @@ add_shortcode('transfer_calculator', 'transfer_calculator_shortcode');
                     <div class="code-block">
 &lt;!-- Add this to a Code Block in Squarespace --&gt;
 &lt;div id="calculator-widget-transfer-cost-calculator"&gt;&lt;/div&gt;
-&lt;script src="https://legalbcalculator.s3.amazonaws.com/legal-calculator-widget.js"&gt;&lt;/script&gt;
+&lt;script src="https://dj4tpjdnz6wyx.cloudfront.net/legal-calculator-widget.js"&gt;&lt;/script&gt;
 &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"&gt;&lt;/script&gt;
                     </div>
 
@@ -498,7 +497,7 @@ add_shortcode('transfer_calculator', 'transfer_calculator_shortcode');
                     <div class="code-block">
 &lt;!-- Add to an Embed element in Webflow --&gt;
 &lt;div id="calculator-widget-transfer-cost-calculator"&gt;&lt;/div&gt;
-&lt;script src="https://legalbcalculator.s3.amazonaws.com/legal-calculator-widget.js"&gt;&lt;/script&gt;
+&lt;script src="https://dj4tpjdnz6wyx.cloudfront.net/legal-calculator-widget.js"&gt;&lt;/script&gt;
 &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"&gt;&lt;/script&gt;
                     </div>
                 </div>
@@ -556,7 +555,7 @@ add_shortcode('transfer_calculator', 'transfer_calculator_shortcode');
 
                 <div class="note">
                     <strong>Widget URL:</strong><br>
-                    <code style="word-break: break-all;">https://legalbcalculator.s3.amazonaws.com/legal-calculator-widget.js</code>
+                    <code style="word-break: break-all;">https://dj4tpjdnz6wyx.cloudfront.net/legal-calculator-widget.js</code>
                 </div>
 
                 <div class="success">
@@ -592,7 +591,7 @@ add_shortcode('transfer_calculator', 'transfer_calculator_shortcode');
     </div>
 
     <!-- Include the widget script -->
-    <script src="/legal-calculator-widget.js"></script>
+    <script src="widget/legal-calculator-widget.js"></script>
     
     <!-- Include jsPDF for PDF functionality in demo -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>

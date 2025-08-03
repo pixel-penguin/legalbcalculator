@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             <button type="submit" id="form-submit" class="btn btn-primary" style="${buttonStyling}">Calculate</button>
                         </div>
                     </form>
-                    <div id="resultsTransferCost" class="wkhCalculatorResults" style="margin-top:24px;"></div>
+                    <div id="resultsTransferCost" class="calculatorResults" style="margin-top:24px;"></div>
                 </div>`;
         }
         return '';
@@ -155,55 +155,35 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const doc = new window.jspdf.jsPDF();
         
-        // Add logo
-        const imageUrl = 'https://wkhnamibiastorage.s3.amazonaws.com/WHK-Logo-FINAL-12-1.png';
-        addImageToPdf(doc, imageUrl);
+        // Add title without logo
+        doc.setFontSize(16);
+        doc.setFont('helvetica', 'bold');
+        doc.text('Transfer Cost Calculator', 10, 30);
         
-        // Wait for image to load before adding content
-        setTimeout(() => {
-            doc.setFontSize(14);
-            doc.setFont('helvetica', 'bold');
-            doc.text('Transfer Cost Calculator', 10, 70);
+        doc.setFontSize(14);
+        doc.setFont('helvetica', 'bold');
+        doc.text('Transfer Cost Calculation Results', 10, 50);
 
-            // Get form values
-            const form = document.getElementById('calculatorTransferCost');
-            const dutyTypeSelect = form.querySelector('select[name="dutytype"]');
-            const subTypeSelect = form.querySelector('select[name="sub_type"]');
-            const dutyType = dutyTypeSelect.options[dutyTypeSelect.selectedIndex].text;
-            const subType = subTypeSelect.options[subTypeSelect.selectedIndex].text;
+        // Get form values
+        const form = document.getElementById('calculatorTransferCost');
+        const dutyTypeSelect = form.querySelector('select[name="dutytype"]');
+        const subTypeSelect = form.querySelector('select[name="sub_type"]');
+        const dutyType = dutyTypeSelect.options[dutyTypeSelect.selectedIndex].text;
+        const subType = subTypeSelect.options[subTypeSelect.selectedIndex].text;
 
-            doc.setFontSize(12);
-            doc.text('Duty Type: ' + dutyType, 10, 85);
-            doc.text('Sub Type: ' + subType, 10, 100);
+        doc.setFontSize(12);
+        doc.text('Duty Type: ' + dutyType, 10, 65);
+        doc.text('Sub Type: ' + subType, 10, 80);
 
-            // Add results table
-            addTableToPdf(doc, createResultsTable(data), 120);
+        // Add results table
+        addTableToPdf(doc, createResultsTable(data), 100);
 
-            // Add disclaimer
-            const disclaimerText = `Disclaimer\nAll estimated calculations are provided for general information purposes only and do not constitute professional or financial advice. We make no claims, promises or guarantees regarding the accuracy, completeness or adequacy of the information contained on this web site. Laws are constantly changing and legal advice must be tailored to the specific circumstances of each case. Fees and charges are per individual transfer, bond registration or bond cancellation. If a transaction involves more than one property or bond cancellation, fees and charges must be adapted accordingly. For more accurate calculations, please contact Dr Weder, Kauta & Hoveka Inc on (+264) 61 275 550, and ask for the conveyancing department.`;
-            doc.setFontSize(10);
-            doc.text(disclaimerText, 10, doc.internal.pageSize.getHeight() - 40, { maxWidth: 180 });
+        // Add disclaimer without company contact info
+        const disclaimerText = `Disclaimer\nAll estimated calculations are provided for general information purposes only and do not constitute professional or financial advice. We make no claims, promises or guarantees regarding the accuracy, completeness or adequacy of the information contained in this calculator. Laws are constantly changing and legal advice must be tailored to the specific circumstances of each case. Fees and charges are per individual transfer, bond registration or bond cancellation. If a transaction involves more than one property or bond cancellation, fees and charges must be adapted accordingly.`;
+        doc.setFontSize(10);
+        doc.text(disclaimerText, 10, doc.internal.pageSize.getHeight() - 40, { maxWidth: 180 });
 
-            doc.save('transfer-cost-calculation.pdf');
-        }, 2000);
-    }
-
-    function addImageToPdf(doc, imageUrl) {
-        const xhr = new XMLHttpRequest();
-        xhr.onload = function () {
-            const reader = new FileReader();
-            reader.onloadend = function () {
-                const base64data = reader.result;
-                const imageWidth = 60;
-                const aspectRatio = 1.5;
-                const imageHeight = imageWidth / aspectRatio;
-                doc.addImage(base64data, 'PNG', 10, 10, imageWidth, imageHeight);
-            };
-            reader.readAsDataURL(xhr.response);
-        };
-        xhr.open('GET', imageUrl);
-        xhr.responseType = 'blob';
-        xhr.send();
+        doc.save('transfer-cost-calculation.pdf');
     }
 
     function addTableToPdf(doc, resultsTable, startY) {
