@@ -1,0 +1,279 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Legal Calculator API with CloudFront CDN - Unified Deployment
+Parameters:
+  Environment:
+    Type: String
+    Default: sandbox
+    AllowedValues:
+    - sandbox
+    - live
+    Description: Environment for deployment
+  DomainName:
+    Type: String
+    Default: ''
+    Description: Custom domain name (optional, e.g., calculator.yourdomain.com)
+  ApiDomainName:
+    Type: String
+    Default: ''
+    Description: Custom API domain name (optional, e.g., api.yourdomain.com)
+Conditions:
+  HasCustomDomain:
+    Fn::Not:
+    - Fn::Equals:
+      - Ref: DomainName
+      - ''
+  HasApiDomain:
+    Fn::Not:
+    - Fn::Equals:
+      - Ref: ApiDomainName
+      - ''
+Globals:
+  Function:
+    Timeout: 30
+    Runtime: nodejs18.x
+    Environment:
+      Variables:
+        ENVIRONMENT:
+          Ref: Environment
+Resources:
+  LegalCalculatorApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName:
+        Ref: Environment
+      Cors:
+        AllowMethods: '''GET,POST,OPTIONS'''
+        AllowHeaders: '''Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'''
+        AllowOrigin: '''*'''
+      Auth:
+        ApiKeyRequired: false
+  TransferCostCalculatorFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName:
+        Fn::Sub: transfer-cost-calculator-${Environment}
+      CodeUri: TransferCostCalculatorFunction
+      Handler: index.handler
+      Environment:
+        Variables:
+          ENVIRONMENT:
+            Ref: Environment
+      Events:
+        Calculate:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: LegalCalculatorApi
+            Path: /calculate
+            Method: post
+        Options:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: LegalCalculatorApi
+            Path: /calculate
+            Method: options
+    Metadata:
+      SamResourceId: TransferCostCalculatorFunction
+  LegalCalculatorBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName:
+        Fn::Sub: legal-calculator-${Environment}-${AWS::AccountId}
+      WebsiteConfiguration:
+        IndexDocument: documentation.html
+        ErrorDocument: documentation.html
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: false
+        BlockPublicPolicy: false
+        IgnorePublicAcls: false
+        RestrictPublicBuckets: false
+      CorsConfiguration:
+        CorsRules:
+        - AllowedHeaders:
+          - '*'
+          AllowedMethods:
+          - GET
+          - HEAD
+          AllowedOrigins:
+          - '*'
+          MaxAge: 3600
+  StaticContentDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Aliases:
+          Fn::If:
+          - HasCustomDomain
+          - - Ref: DomainName
+          - Ref: AWS::NoValue
+        DefaultCacheBehavior:
+          TargetOriginId: S3Origin
+          ViewerProtocolPolicy: redirect-to-https
+          AllowedMethods:
+          - GET
+          - HEAD
+          - OPTIONS
+          CachedMethods:
+          - GET
+          - HEAD
+          - OPTIONS
+          Compress: true
+          CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad
+          OriginRequestPolicyId: 88a5eaf4-2fd4-4709-b370-b4c650ea3fcf
+          ResponseHeadersPolicyId: 67f7725c-6f97-4210-82d7-5512b31e9d03
+        Origins:
+        - Id: S3Origin
+          DomainName:
+            Fn::GetAtt:
+            - LegalCalculatorBucket
+            - RegionalDomainName
+          S3OriginConfig:
+            OriginAccessIdentity: ''
+        Enabled: true
+        DefaultRootObject: documentation.html
+        PriceClass: PriceClass_100
+        HttpVersion: http2
+        Comment:
+          Fn::Sub: Legal Calculator Static Content - ${Environment}
+        CustomErrorResponses:
+        - ErrorCode: 403
+          ResponseCode: 200
+          ResponsePagePath: /documentation.html
+        - ErrorCode: 404
+          ResponseCode: 200
+          ResponsePagePath: /documentation.html
+  ApiDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Aliases:
+          Fn::If:
+          - HasApiDomain
+          - - Ref: ApiDomainName
+          - Ref: AWS::NoValue
+        DefaultCacheBehavior:
+          TargetOriginId: ApiGatewayOrigin
+          ViewerProtocolPolicy: redirect-to-https
+          AllowedMethods:
+          - DELETE
+          - GET
+          - HEAD
+          - OPTIONS
+          - PATCH
+          - POST
+          - PUT
+          CachedMethods:
+          - GET
+          - HEAD
+          - OPTIONS
+          Compress: true
+          CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad
+          OriginRequestPolicyId: b689b0a8-53d0-40ab-baf2-68738e2966ac
+          ResponseHeadersPolicyId: 5cc3b908-e619-4b99-88e5-2cf7f45965bd
+        Origins:
+        - Id: ApiGatewayOrigin
+          DomainName:
+            Fn::Sub: ${LegalCalculatorApi}.execute-api.${AWS::Region}.amazonaws.com
+          OriginPath:
+            Fn::Sub: /${Environment}
+          CustomOriginConfig:
+            HTTPPort: 443
+            OriginProtocolPolicy: https-only
+            OriginSSLProtocols:
+            - TLSv1.2
+        Enabled: true
+        PriceClass: PriceClass_100
+        HttpVersion: http2
+        Comment:
+          Fn::Sub: Legal Calculator API - ${Environment}
+  CacheInvalidationFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName:
+        Fn::Sub: cache-invalidation-${Environment}
+      CodeUri: CacheInvalidationFunction
+      Handler: index.handler
+      Runtime: python3.9
+      Timeout: 60
+      Policies:
+      - Statement:
+        - Effect: Allow
+          Action:
+          - cloudfront:CreateInvalidation
+          Resource: '*'
+      Environment:
+        Variables:
+          DISTRIBUTION_ID:
+            Ref: StaticContentDistribution
+    Metadata:
+      SamResourceId: CacheInvalidationFunction
+Outputs:
+  ApiUrl:
+    Description: API Gateway endpoint URL (direct)
+    Value:
+      Fn::Sub: https://${LegalCalculatorApi}.execute-api.${AWS::Region}.amazonaws.com/${Environment}
+    Export:
+      Name:
+        Fn::Sub: ${AWS::StackName}-ApiUrl
+  ApiCloudFrontUrl:
+    Description: API endpoint via CloudFront CDN
+    Value:
+      Fn::Sub: https://${ApiDistribution.DomainName}
+    Export:
+      Name:
+        Fn::Sub: ${AWS::StackName}-ApiCloudFrontUrl
+  ApiCustomDomainUrl:
+    Condition: HasApiDomain
+    Description: API endpoint via custom domain
+    Value:
+      Fn::Sub: https://${ApiDomainName}
+    Export:
+      Name:
+        Fn::Sub: ${AWS::StackName}-ApiCustomDomainUrl
+  WebsiteUrl:
+    Description: Website URL (S3 direct)
+    Value:
+      Fn::GetAtt:
+      - LegalCalculatorBucket
+      - WebsiteURL
+    Export:
+      Name:
+        Fn::Sub: ${AWS::StackName}-WebsiteUrl
+  WebsiteCloudFrontUrl:
+    Description: Website URL via CloudFront CDN
+    Value:
+      Fn::Sub: https://${StaticContentDistribution.DomainName}
+    Export:
+      Name:
+        Fn::Sub: ${AWS::StackName}-WebsiteCloudFrontUrl
+  WebsiteCustomDomainUrl:
+    Condition: HasCustomDomain
+    Description: Website URL via custom domain
+    Value:
+      Fn::Sub: https://${DomainName}
+    Export:
+      Name:
+        Fn::Sub: ${AWS::StackName}-WebsiteCustomDomainUrl
+  BucketName:
+    Description: S3 Bucket name for hosting files
+    Value:
+      Ref: LegalCalculatorBucket
+    Export:
+      Name:
+        Fn::Sub: ${AWS::StackName}-BucketName
+  StaticDistributionId:
+    Description: CloudFront Distribution ID for static content
+    Value:
+      Ref: StaticContentDistribution
+    Export:
+      Name:
+        Fn::Sub: ${AWS::StackName}-StaticDistributionId
+  ApiDistributionId:
+    Description: CloudFront Distribution ID for API
+    Value:
+      Ref: ApiDistribution
+    Export:
+      Name:
+        Fn::Sub: ${AWS::StackName}-ApiDistributionId

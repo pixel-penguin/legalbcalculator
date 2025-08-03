@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: Legal Calculator API with CloudFront CDN for both API and static content
+Description: Legal Calculator API with CloudFront CDN - Unified Deployment
 
 Parameters:
   Environment:
@@ -90,28 +90,6 @@ Resources:
             AllowedOrigins: ['*']
             MaxAge: 3600
 
-  # S3 Bucket Policy for public read access
-  LegalCalculatorBucketPolicy:
-    Type: AWS::S3::BucketPolicy
-    Properties:
-      Bucket: !Ref LegalCalculatorBucket
-      PolicyDocument:
-        Statement:
-          - Effect: Allow
-            Principal: '*'
-            Action: 's3:GetObject'
-            Resource: !Sub '${LegalCalculatorBucket}/*'
-
-  # CloudFront Origin Access Control for S3
-  CloudFrontOAC:
-    Type: AWS::CloudFront::OriginAccessControl
-    Properties:
-      OriginAccessControlConfig:
-        Name: !Sub '${AWS::StackName}-OAC'
-        OriginAccessControlOriginType: s3
-        SigningBehavior: always
-        SigningProtocol: sigv4
-
   # CloudFront Distribution for Static Content (Widget & Documentation)
   StaticContentDistribution:
     Type: AWS::CloudFront::Distribution
@@ -132,7 +110,6 @@ Resources:
             DomainName: !GetAtt LegalCalculatorBucket.RegionalDomainName
             S3OriginConfig:
               OriginAccessIdentity: ''
-            OriginAccessControlId: !Ref CloudFrontOAC
         Enabled: true
         DefaultRootObject: documentation.html
         PriceClass: PriceClass_100
@@ -158,7 +135,6 @@ Resources:
           AllowedMethods: [DELETE, GET, HEAD, OPTIONS, PATCH, POST, PUT]
           CachedMethods: [GET, HEAD, OPTIONS]
           Compress: true
-          # Cache policy for API - short TTL for dynamic content
           CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad  # CachingDisabled (for dynamic API)
           OriginRequestPolicyId: b689b0a8-53d0-40ab-baf2-68738e2966ac  # AllViewerExceptHostHeader
           ResponseHeadersPolicyId: 5cc3b908-e619-4b99-88e5-2cf7f45965bd  # CORS-With-Preflight
@@ -174,26 +150,6 @@ Resources:
         PriceClass: PriceClass_100
         HttpVersion: http2
         Comment: !Sub 'Legal Calculator API - ${Environment}'
-
-  # Update S3 bucket policy to allow CloudFront OAC
-  CloudFrontS3Policy:
-    Type: AWS::S3::BucketPolicy
-    Properties:
-      Bucket: !Ref LegalCalculatorBucket
-      PolicyDocument:
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: cloudfront.amazonaws.com
-            Action: 's3:GetObject'
-            Resource: !Sub '${LegalCalculatorBucket}/*'
-            Condition:
-              StringEquals:
-                'AWS:SourceArn': !Sub 'arn:aws:cloudfront::${AWS::AccountId}:distribution/${StaticContentDistribution}'
-          - Effect: Allow
-            Principal: '*'
-            Action: 's3:GetObject'
-            Resource: !Sub '${LegalCalculatorBucket}/*'
 
   # Cache invalidation Lambda for deployments
   CacheInvalidationFunction:

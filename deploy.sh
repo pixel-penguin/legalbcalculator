@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Legal Calculator SAM Deployment Script with CloudFront
+# Legal Calculator SAM Deployment Script - Unified CloudFront Deployment
 # Usage: ./deploy.sh [sandbox|live] [custom-domain] [api-domain]
 
 set -e
@@ -9,9 +9,9 @@ ENVIRONMENT=${1:-sandbox}
 CUSTOM_DOMAIN=${2:-""}
 API_DOMAIN=${3:-""}
 STACK_NAME="legal-calculator-${ENVIRONMENT}"
-S3_BUCKET_PREFIX="legal-calculator-sam-deployments"
+DEPLOYMENT_BUCKET="propertynewstest"
 
-echo "🚀 Deploying Legal Calculator with CloudFront to ${ENVIRONMENT} environment..."
+echo "🚀 Deploying Complete Legal Calculator with CloudFront to ${ENVIRONMENT} environment..."
 
 # Validate environment parameter
 if [[ "$ENVIRONMENT" != "sandbox" && "$ENVIRONMENT" != "live" ]]; then
@@ -31,10 +31,6 @@ if ! command -v sam &> /dev/null; then
     echo "❌ Error: SAM CLI is not installed. Please install it first."
     exit 1
 fi
-
-# Get AWS Account ID for unique bucket naming
-AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
-DEPLOYMENT_BUCKET="${S3_BUCKET_PREFIX}-${AWS_ACCOUNT_ID}-${AWS_REGION:-us-east-1}"
 
 echo "📦 Building SAM application..."
 sam build
@@ -223,12 +219,13 @@ fi
 
 echo "💾 Configuration saved to .env.${ENVIRONMENT}"
 echo ""
-echo "🎉 Your Legal Calculator with CloudFront CDN is now live!"
+echo "🎉 Your Complete Legal Calculator with CloudFront CDN is now live!"
 echo ""
-echo "⚡ Benefits of CloudFront:"
+echo "⚡ CloudFront Benefits Active:"
 echo "   ✓ Global CDN for faster loading worldwide"
-echo "   ✓ HTTPS/SSL encryption included"
+echo "   ✓ HTTPS/SSL encryption for all content"
 echo "   ✓ DDoS protection and security headers"
+echo "   ✓ Professional CloudFront domains"
 echo "   ✓ Better caching for static assets"
 echo "   ✓ Support for custom domains"
 echo ""
@@ -244,4 +241,6 @@ echo "📝 Next Steps:"
 echo "   1. Test your calculator at: ${WEBSITE_CLOUDFRONT_URL}"
 echo "   2. Use the CloudFront URLs for production integration"
 echo "   3. Set up custom domains if needed (requires SSL certificates)"
-echo "   4. Monitor CloudFront metrics in AWS Console" 
+echo "   4. Monitor CloudFront metrics in AWS Console"
+echo ""
+echo "🌟 All services deployed in one stack - ready for production!" 
