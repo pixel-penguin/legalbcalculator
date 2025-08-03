@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Legal Calculator Widget - Documentation & Integration Guide</title>
+    <title>Transfer Cost Calculator Widget - Documentation & Integration Guide</title>
     <style>
         * {
             margin: 0;
@@ -248,101 +248,124 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Legal Calculator Widget</h1>
-            <p>Property Transfer Cost Calculator for Namibia - Integration Guide & Documentation</p>
+            <h1>Transfer Cost Calculator Widget</h1>
+            <p>Property Transfer Cost Calculator for Namibia - Easy JavaScript Integration</p>
         </div>
 
         <div class="content">
             <div class="main-content">
                 <div class="section" id="overview">
                     <h2>Overview</h2>
-                    <p>The Legal Calculator Widget is a JavaScript component that allows you to integrate property transfer cost calculations directly into your website. It provides an easy-to-use interface for calculating transfer costs based on Namibian property law.</p>
+                    <p>The Transfer Cost Calculator Widget is a simple JavaScript component that allows you to integrate property transfer cost calculations directly into your website. It provides an easy-to-use interface for calculating transfer costs based on Namibian property law.</p>
                     
                     <h3>Features</h3>
                     <ul>
                         <li>📊 Accurate transfer cost calculations for Namibian properties</li>
-                        <li>🎨 Customizable styling with light and dark themes</li>
+                        <li>🎨 Clean, professional styling included</li>
                         <li>📱 Responsive design that works on all devices</li>
                         <li>⚡ Fast API integration with real-time calculations</li>
                         <li>🔧 Easy integration with just a few lines of code</li>
-                        <li>🌍 Support for both sandbox and live environments</li>
+                        <li>📄 Built-in PDF generation capability</li>
+                        <li>🌍 Production-ready API endpoint</li>
                     </ul>
                 </div>
 
                 <div class="section" id="quick-start">
                     <h2>Quick Start</h2>
-                    <p>Get started with the Legal Calculator Widget in under 5 minutes:</p>
+                    <p>Get started with the Transfer Cost Calculator Widget in under 5 minutes:</p>
 
                     <h3>1. Include the Widget Script</h3>
                     <div class="code-block">
-&lt;script src="https://your-bucket-url.s3.amazonaws.com/legal-calculator-widget.js"&gt;&lt;/script&gt;
+&lt;script src="https://legalbcalculator.s3.amazonaws.com/legal-calculator-widget.js"&gt;&lt;/script&gt;
                     </div>
 
                     <h3>2. Create a Container</h3>
                     <div class="code-block">
-&lt;div id="legal-calculator"&gt;&lt;/div&gt;
+&lt;div id="calculator-widget-transfer-cost-calculator"&gt;&lt;/div&gt;
                     </div>
 
-                    <h3>3. Initialize the Widget</h3>
+                    <h3>3. Optional: Include PDF Generation (for PDF downloads)</h3>
                     <div class="code-block">
-&lt;script&gt;
-document.addEventListener('DOMContentLoaded', function() {
-    new LegalCalculatorWidget('legal-calculator', {
-        apiUrl: 'https://your-api-gateway-url.execute-api.region.amazonaws.com/sandbox/calculate',
-        theme: 'light',
-        currency: 'N$'
-    });
-});
-&lt;/script&gt;
+&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"&gt;&lt;/script&gt;
                     </div>
 
                     <div class="success">
-                        <strong>That's it!</strong> Your calculator is now ready to use.
+                        <strong>That's it!</strong> Your calculator will automatically initialize when the page loads.
+                    </div>
+                </div>
+
+                <div class="section" id="complete-example">
+                    <h2>Complete HTML Example</h2>
+                    <p>Here's a complete working example:</p>
+                    
+                    <div class="code-block">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Transfer Cost Calculator&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Property Transfer Cost Calculator&lt;/h1&gt;
+    &lt;p&gt;Calculate your property transfer costs for Namibian properties:&lt;/p&gt;
+    
+    &lt;!-- Calculator Widget Container --&gt;
+    &lt;div id="calculator-widget-transfer-cost-calculator"&gt;&lt;/div&gt;
+    
+    &lt;!-- Include the widget script --&gt;
+    &lt;script src="https://legalbcalculator.s3.amazonaws.com/legal-calculator-widget.js"&gt;&lt;/script&gt;
+    
+    &lt;!-- Optional: Include jsPDF for PDF downloads --&gt;
+    &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
                     </div>
                 </div>
 
                 <div class="section" id="api-reference">
                     <h2>API Reference</h2>
                     
+                    <p>The widget automatically communicates with our API endpoint:</p>
                     <div class="api-endpoint">
                         <span class="method">POST</span>
-                        <code>/calculate</code>
+                        <code>https://2vllnjjl8h.execute-api.us-east-1.amazonaws.com/prod/calculator</code>
                     </div>
 
-                    <h3>Request Parameters</h3>
+                    <h3>Form Fields</h3>
                     <table class="parameter-table">
                         <thead>
                             <tr>
-                                <th>Parameter</th>
+                                <th>Field</th>
                                 <th>Type</th>
-                                <th>Required</th>
+                                <th>Options</th>
                                 <th>Description</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td><code>amount</code></td>
+                                <td><code>Purchase Price</code></td>
                                 <td>Number</td>
-                                <td><span class="required">Required</span></td>
+                                <td>Any positive number</td>
                                 <td>Property value in Namibian Dollars</td>
                             </tr>
                             <tr>
-                                <td><code>sub_type</code></td>
-                                <td>String</td>
-                                <td><span class="required">Required</span></td>
-                                <td>Property type: "S" (Sectional Title) or "F" (Freehold)</td>
+                                <td><code>Duty Type</code></td>
+                                <td>Select</td>
+                                <td>Natural Person, Affirmative Action, Other</td>
+                                <td>Type of buyer/duty category</td>
                             </tr>
                             <tr>
-                                <td><code>dutytype</code></td>
-                                <td>String</td>
-                                <td><span class="required">Required</span></td>
-                                <td>Duty type: "N" (Normal/Residential), "A" (Agricultural), "C" (Commercial)</td>
+                                <td><code>Property Type</code></td>
+                                <td>Select</td>
+                                <td>Sectional Title, Free Standing Erven</td>
+                                <td>Type of property being transferred</td>
                             </tr>
                             <tr>
-                                <td><code>date</code></td>
-                                <td>String</td>
-                                <td><span class="required">Required</span></td>
-                                <td>Transfer date: "before" (before Oct 1, 2024) or "after" (from Oct 1, 2024)</td>
+                                <td><code>Transfer Date</code></td>
+                                <td>Select</td>
+                                <td>As of 1 OCT 2024, Prior to 1 OCT 2024</td>
+                                <td>Transfer date affects duty rates</td>
                             </tr>
                         </tbody>
                     </table>
@@ -361,266 +384,122 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 </div>
 
-                <div class="section" id="configuration">
-                    <h2>Configuration Options</h2>
+                <div class="section" id="customization">
+                    <h2>Customization</h2>
                     
-                    <table class="parameter-table">
-                        <thead>
-                            <tr>
-                                <th>Option</th>
-                                <th>Type</th>
-                                <th>Default</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><code>apiUrl</code></td>
-                                <td>String</td>
-                                <td>sandbox URL</td>
-                                <td>API endpoint URL</td>
-                            </tr>
-                            <tr>
-                                <td><code>theme</code></td>
-                                <td>String</td>
-                                <td>'light'</td>
-                                <td>'light' or 'dark'</td>
-                            </tr>
-                            <tr>
-                                <td><code>currency</code></td>
-                                <td>String</td>
-                                <td>'N$'</td>
-                                <td>Currency symbol to display</td>
-                            </tr>
-                            <tr>
-                                <td><code>loadingText</code></td>
-                                <td>String</td>
-                                <td>'Calculating...'</td>
-                                <td>Loading message text</td>
-                            </tr>
-                            <tr>
-                                <td><code>errorText</code></td>
-                                <td>String</td>
-                                <td>'Error calculating costs. Please try again.'</td>
-                                <td>Default error message</td>
-                            </tr>
-                            <tr>
-                                <td><code>containerClass</code></td>
-                                <td>String</td>
-                                <td>'legal-calc-widget'</td>
-                                <td>CSS class for the main container</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="section" id="styling">
-                    <h2>Styling & Customization</h2>
-                    
-                    <h3>Built-in Themes</h3>
-                    <p>The widget comes with two built-in themes:</p>
-                    
-                    <h4>Light Theme (Default)</h4>
-                    <div class="code-block">
-new LegalCalculatorWidget('calculator', {
-    theme: 'light'
-});
-                    </div>
-
-                    <h4>Dark Theme</h4>
-                    <div class="code-block">
-new LegalCalculatorWidget('calculator', {
-    theme: 'dark'
-});
-                    </div>
-
-                    <h3>Custom Styling</h3>
-                    <p>You can override the default styles by targeting the widget's CSS classes:</p>
+                    <h3>Custom CSS Styling</h3>
+                    <p>You can override the default styles by targeting the widget elements:</p>
                     
                     <div class="code-block">
 /* Custom styling example */
-.legal-calc-widget {
-    border: 2px solid #your-brand-color;
-    border-radius: 15px;
-    font-family: 'Your Custom Font', sans-serif;
+#calculator-widget-transfer-cost-calculator {
+    max-width: 600px; /* Make it wider */
 }
 
-.legal-calc-widget .calc-button {
-    background: #your-brand-color;
+#calculator-widget-transfer-cost-calculator h3 {
+    color: #your-brand-color;
+    font-size: 28px;
+}
+
+#calculator-widget-transfer-cost-calculator button {
+    background: #your-brand-color !important;
     border-radius: 25px;
 }
 
-.legal-calc-widget .calc-header h3 {
-    color: #your-brand-color;
+#calculator-widget-transfer-cost-calculator input,
+#calculator-widget-transfer-cost-calculator select {
+    border: 2px solid #your-brand-color;
 }
                     </div>
 
-                    <h3>CSS Classes Reference</h3>
-                    <table class="parameter-table">
-                        <thead>
-                            <tr>
-                                <th>Class</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><code>.legal-calc-widget</code></td>
-                                <td>Main widget container</td>
-                            </tr>
-                            <tr>
-                                <td><code>.calc-header</code></td>
-                                <td>Widget header section</td>
-                            </tr>
-                            <tr>
-                                <td><code>.calc-form</code></td>
-                                <td>Form container</td>
-                            </tr>
-                            <tr>
-                                <td><code>.form-group</code></td>
-                                <td>Individual form field container</td>
-                            </tr>
-                            <tr>
-                                <td><code>.calc-button</code></td>
-                                <td>Submit button</td>
-                            </tr>
-                            <tr>
-                                <td><code>.calc-results</code></td>
-                                <td>Results display container</td>
-                            </tr>
-                            <tr>
-                                <td><code>.result-row</code></td>
-                                <td>Individual result row</td>
-                            </tr>
-                            <tr>
-                                <td><code>.result-row.total</code></td>
-                                <td>Total cost row</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <h3>Multiple Calculators</h3>
+                    <p>You can include multiple calculators on the same page:</p>
+                    
+                    <div class="code-block">
+&lt;div id="calculator-widget-transfer-cost-calculator"&gt;&lt;/div&gt;
+&lt;h2&gt;Another Calculator Section&lt;/h2&gt;
+&lt;div id="calculator-widget-transfer-cost-calculator-2"&gt;&lt;/div&gt;
+
+&lt;script&gt;
+// The widget will only initialize the first one automatically
+// For additional calculators, you need to manually set the innerHTML
+document.addEventListener('DOMContentLoaded', function() {
+    const secondWidget = document.getElementById('calculator-widget-transfer-cost-calculator-2');
+    if (secondWidget) {
+        // Copy the content from the first widget or manually create it
+        secondWidget.innerHTML = document.getElementById('calculator-widget-transfer-cost-calculator').innerHTML;
+    }
+});
+&lt;/script&gt;
+                    </div>
                 </div>
 
-                <div class="section" id="examples">
+                <div class="section" id="features">
+                    <h2>Widget Features</h2>
+                    
+                    <h3>Automatic Form Validation</h3>
+                    <p>The widget includes built-in form validation to ensure all required fields are completed before submission.</p>
+                    
+                    <h3>Loading States</h3>
+                    <p>Visual feedback is provided during calculation with a loading state that disables the form and shows "Calculating..." text.</p>
+                    
+                    <h3>Error Handling</h3>
+                    <p>Network errors and API errors are gracefully handled with user-friendly error messages.</p>
+                    
+                    <h3>PDF Generation</h3>
+                    <p>When jsPDF is included, users can download their calculation results as a professional PDF document including:</p>
+                    <ul>
+                        <li>Company logo and branding</li>
+                        <li>Complete cost breakdown</li>
+                        <li>Input parameters used</li>
+                        <li>Legal disclaimer</li>
+                    </ul>
+                    
+                    <h3>Responsive Design</h3>
+                    <p>The widget automatically adapts to different screen sizes and works perfectly on mobile devices.</p>
+                </div>
+
+                <div class="section" id="integration-examples">
                     <h2>Integration Examples</h2>
                     
                     <h3>WordPress Integration</h3>
                     <div class="code-block">
 // Add to your theme's functions.php
-function add_legal_calculator_scripts() {
-    wp_enqueue_script('legal-calculator', 
-        'https://your-bucket-url.s3.amazonaws.com/legal-calculator-widget.js');
-}
-add_action('wp_enqueue_scripts', 'add_legal_calculator_scripts');
-
-// Use in posts/pages with shortcode
-function legal_calculator_shortcode($atts) {
-    $atts = shortcode_atts(array(
-        'theme' => 'light',
-        'api_url' => 'your-api-url'
-    ), $atts);
+function add_transfer_calculator_scripts() {
+    wp_enqueue_script('transfer-calculator', 
+        'https://legalbcalculator.s3.amazonaws.com/legal-calculator-widget.js', 
+        array(), '1.0.0', true);
     
-    $id = 'legal-calc-' . uniqid();
-    
-    return '&lt;div id="' . $id . '"&gt;&lt;/div&gt;
-            &lt;script&gt;
-            document.addEventListener("DOMContentLoaded", function() {
-                new LegalCalculatorWidget("' . $id . '", {
-                    theme: "' . $atts['theme'] . '",
-                    apiUrl: "' . $atts['api_url'] . '"
-                });
-            });
-            &lt;/script&gt;';
+    // Optional: Add jsPDF for PDF functionality
+    wp_enqueue_script('jspdf', 
+        'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js', 
+        array(), '2.5.1', true);
 }
-add_shortcode('legal_calculator', 'legal_calculator_shortcode');
+add_action('wp_enqueue_scripts', 'add_transfer_calculator_scripts');
 
-// Usage: [legal_calculator theme="dark"]
-                    </div>
-
-                    <h3>React Integration</h3>
-                    <div class="code-block">
-import { useEffect, useRef } from 'react';
-
-function LegalCalculator({ theme = 'light', apiUrl }) {
-    const containerRef = useRef(null);
-    const widgetRef = useRef(null);
-
-    useEffect(() => {
-        if (containerRef.current && window.LegalCalculatorWidget) {
-            widgetRef.current = new window.LegalCalculatorWidget(
-                containerRef.current.id,
-                { theme, apiUrl }
-            );
-        }
-
-        return () => {
-            if (widgetRef.current) {
-                // Cleanup if needed
-            }
-        };
-    }, [theme, apiUrl]);
-
-    return &lt;div id="legal-calc-react" ref={containerRef}&gt;&lt;/div&gt;;
+// Create a shortcode
+function transfer_calculator_shortcode() {
+    return '&lt;div id="calculator-widget-transfer-cost-calculator"&gt;&lt;/div&gt;';
 }
+add_shortcode('transfer_calculator', 'transfer_calculator_shortcode');
 
-export default LegalCalculator;
+// Usage: [transfer_calculator]
                     </div>
 
-                    <h3>Vue.js Integration</h3>
+                    <h3>Squarespace Integration</h3>
                     <div class="code-block">
-&lt;template&gt;
-  &lt;div :id="containerId"&gt;&lt;/div&gt;
-&lt;/template&gt;
-
-&lt;script&gt;
-export default {
-  name: 'LegalCalculator',
-  props: {
-    theme: {
-      type: String,
-      default: 'light'
-    },
-    apiUrl: {
-      type: String,
-      required: true
-    }
-  },
-  data() {
-    return {
-      containerId: 'legal-calc-' + Math.random().toString(36).substr(2, 9),
-      widget: null
-    };
-  },
-  mounted() {
-    this.widget = new LegalCalculatorWidget(this.containerId, {
-      theme: this.theme,
-      apiUrl: this.apiUrl
-    });
-  },
-  beforeDestroy() {
-    // Cleanup if needed
-  }
-};
-&lt;/script&gt;
+&lt;!-- Add this to a Code Block in Squarespace --&gt;
+&lt;div id="calculator-widget-transfer-cost-calculator"&gt;&lt;/div&gt;
+&lt;script src="https://legalbcalculator.s3.amazonaws.com/legal-calculator-widget.js"&gt;&lt;/script&gt;
+&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"&gt;&lt;/script&gt;
                     </div>
-                </div>
 
-                <div class="section" id="environments">
-                    <h2>Environments</h2>
-                    
-                    <h3>Sandbox Environment</h3>
-                    <p>Use the sandbox environment for testing and development:</p>
+                    <h3>Webflow Integration</h3>
                     <div class="code-block">
-apiUrl: 'https://your-api-gateway-url.execute-api.region.amazonaws.com/sandbox/calculate'
-                    </div>
-                    
-                    <h3>Live Environment</h3>
-                    <p>Use the live environment for production:</p>
-                    <div class="code-block">
-apiUrl: 'https://your-api-gateway-url.execute-api.region.amazonaws.com/live/calculate'
-                    </div>
-
-                    <div class="warning">
-                        <strong>Important:</strong> Make sure to switch to the live environment URL when deploying to production.
+&lt;!-- Add to an Embed element in Webflow --&gt;
+&lt;div id="calculator-widget-transfer-cost-calculator"&gt;&lt;/div&gt;
+&lt;script src="https://legalbcalculator.s3.amazonaws.com/legal-calculator-widget.js"&gt;&lt;/script&gt;
+&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"&gt;&lt;/script&gt;
                     </div>
                 </div>
 
@@ -631,33 +510,31 @@ apiUrl: 'https://your-api-gateway-url.execute-api.region.amazonaws.com/live/calc
                     
                     <h4>Widget not displaying</h4>
                     <ul>
-                        <li>Check that the script is loaded before initializing the widget</li>
-                        <li>Ensure the container element exists in the DOM</li>
-                        <li>Check browser console for JavaScript errors</li>
+                        <li>Ensure the container ID is exactly <code>calculator-widget-transfer-cost-calculator</code></li>
+                        <li>Check that the script is loaded correctly (no 404 errors in browser console)</li>
+                        <li>Make sure there are no JavaScript errors preventing execution</li>
                     </ul>
                     
-                    <h4>API errors</h4>
+                    <h4>Calculation not working</h4>
                     <ul>
-                        <li>Verify the API URL is correct</li>
-                        <li>Check CORS settings on your API Gateway</li>
-                        <li>Ensure all required parameters are being sent</li>
+                        <li>Check browser console for network errors</li>
+                        <li>Ensure all form fields are filled in</li>
+                        <li>Verify that the purchase price is a valid number</li>
                     </ul>
                     
+                    <h4>PDF download not working</h4>
+                    <ul>
+                        <li>Make sure jsPDF library is included before using the widget</li>
+                        <li>Check for any JavaScript errors in the console</li>
+                        <li>Some browsers may block PDF downloads - ensure popups are allowed</li>
+                    </ul>
+
                     <h4>Styling issues</h4>
                     <ul>
                         <li>Check for CSS conflicts with existing stylesheets</li>
-                        <li>Use more specific CSS selectors to override styles</li>
-                        <li>Ensure the theme parameter is set correctly</li>
+                        <li>Use more specific CSS selectors with <code>!important</code> if needed</li>
+                        <li>Test in different browsers to ensure compatibility</li>
                     </ul>
-
-                    <h3>Debug Mode</h3>
-                    <p>Enable debug mode to see detailed error messages:</p>
-                    <div class="code-block">
-new LegalCalculatorWidget('calculator', {
-    apiUrl: 'your-api-url',
-    debug: true
-});
-                    </div>
                 </div>
             </div>
 
@@ -667,24 +544,29 @@ new LegalCalculatorWidget('calculator', {
                     <ul>
                         <li><a href="#overview">Overview</a></li>
                         <li><a href="#quick-start">Quick Start</a></li>
+                        <li><a href="#complete-example">Complete Example</a></li>
                         <li><a href="#api-reference">API Reference</a></li>
-                        <li><a href="#configuration">Configuration</a></li>
-                        <li><a href="#styling">Styling</a></li>
-                        <li><a href="#examples">Examples</a></li>
-                        <li><a href="#environments">Environments</a></li>
+                        <li><a href="#customization">Customization</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#integration-examples">Integration Examples</a></li>
                         <li><a href="#troubleshooting">Troubleshooting</a></li>
                         <li><a href="#demo">Live Demo</a></li>
                     </ul>
                 </div>
 
                 <div class="note">
-                    <strong>Need Help?</strong><br>
-                    For technical support or questions, please contact our development team.
+                    <strong>Widget URL:</strong><br>
+                    <code style="word-break: break-all;">https://legalbcalculator.s3.amazonaws.com/legal-calculator-widget.js</code>
                 </div>
 
                 <div class="success">
                     <strong>Pro Tip:</strong><br>
-                    Test your integration in the sandbox environment before going live.
+                    Include the jsPDF library to enable PDF download functionality for your users.
+                </div>
+
+                <div class="warning">
+                    <strong>Important:</strong><br>
+                    The container ID must be exactly <code>calculator-widget-transfer-cost-calculator</code> for the widget to work automatically.
                 </div>
             </div>
         </div>
@@ -694,34 +576,25 @@ new LegalCalculatorWidget('calculator', {
             <p>Try out the calculator below to see how it works:</p>
             
             <div class="demo-container">
-                <div id="demo-calculator"></div>
+                <div id="calculator-widget-transfer-cost-calculator"></div>
             </div>
             
-            <h3>Dark Theme Example</h3>
-            <div class="demo-container" style="background: #2d3748;">
-                <div id="demo-calculator-dark"></div>
-            </div>
+            <h3>How to Use</h3>
+            <ol>
+                <li><strong>Enter Purchase Price:</strong> Input the property value in Namibian Dollars</li>
+                <li><strong>Select Duty Type:</strong> Choose the appropriate buyer category</li>
+                <li><strong>Select Property Type:</strong> Choose between Sectional Title or Free Standing Erven</li>
+                <li><strong>Select Transfer Date:</strong> Choose the applicable time period for current rates</li>
+                <li><strong>Calculate:</strong> Click the Calculate button to get your results</li>
+                <li><strong>Download PDF:</strong> Optionally download your results as a PDF document</li>
+            </ol>
         </div>
     </div>
 
     <!-- Include the widget script -->
-    <script src="widget/legal-calculator-widget.js"></script>
+    <script src="/legal-calculator-widget.js"></script>
     
-    <!-- Initialize demo widgets -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Light theme demo
-            new LegalCalculatorWidget('demo-calculator', {
-                apiUrl: 'https://your-api-gateway-url.execute-api.region.amazonaws.com/sandbox/calculate',
-                theme: 'light'
-            });
-            
-            // Dark theme demo
-            new LegalCalculatorWidget('demo-calculator-dark', {
-                apiUrl: 'https://your-api-gateway-url.execute-api.region.amazonaws.com/sandbox/calculate',
-                theme: 'dark'
-            });
-        });
-    </script>
+    <!-- Include jsPDF for PDF functionality in demo -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </body>
 </html> 
