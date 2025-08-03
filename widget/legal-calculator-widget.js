@@ -122,9 +122,6 @@ document.addEventListener('DOMContentLoaded', function () {
         if (data.total) resultsHtml += `<div style="display:flex; justify-content:space-between; padding:16px 0 8px 0; margin-top:8px; border-top:2px solid #3182ce; font-weight:600; font-size:16px;"><span style="color:#2d3748;">Total:</span><span style="color:#2d3748;">N$ ${formatNumber(data.total)}</span></div>`;
         resultsHtml += '</div>';
         
-        // Add PDF download button
-        resultsHtml += '<button onclick="generatePdf(' + JSON.stringify(data).replace(/"/g, '&quot;') + ', \'calc_transfer_costs\')" style="' + buttonStyling + ' background:#38a169; margin-top:16px;">Download as PDF</button>';
-        
         resultsHtml += '</div>';
 
         resultsDiv.innerHTML = resultsHtml;
@@ -144,89 +141,5 @@ document.addEventListener('DOMContentLoaded', function () {
             button.disabled = false;
             button.style.background = '#3182ce';
         }
-    }
-
-    // PDF Generation function
-    window.generatePdf = function(data, type) {
-        if (typeof window.jspdf === 'undefined') {
-            alert('PDF generation library not loaded. Please include jsPDF library.');
-            return;
-        }
-
-        const doc = new window.jspdf.jsPDF();
-        
-        // Add title without logo
-        doc.setFontSize(16);
-        doc.setFont('helvetica', 'bold');
-        doc.text('Transfer Cost Calculator', 10, 30);
-        
-        doc.setFontSize(14);
-        doc.setFont('helvetica', 'bold');
-        doc.text('Transfer Cost Calculation Results', 10, 50);
-
-        // Get form values
-        const form = document.getElementById('calculatorTransferCost');
-        const dutyTypeSelect = form.querySelector('select[name="dutytype"]');
-        const subTypeSelect = form.querySelector('select[name="sub_type"]');
-        const dutyType = dutyTypeSelect.options[dutyTypeSelect.selectedIndex].text;
-        const subType = subTypeSelect.options[subTypeSelect.selectedIndex].text;
-
-        doc.setFontSize(12);
-        doc.text('Duty Type: ' + dutyType, 10, 65);
-        doc.text('Sub Type: ' + subType, 10, 80);
-
-        // Add results table
-        addTableToPdf(doc, createResultsTable(data), 100);
-
-        // Add disclaimer without company contact info
-        const disclaimerText = `Disclaimer\nAll estimated calculations are provided for general information purposes only and do not constitute professional or financial advice. We make no claims, promises or guarantees regarding the accuracy, completeness or adequacy of the information contained in this calculator. Laws are constantly changing and legal advice must be tailored to the specific circumstances of each case. Fees and charges are per individual transfer, bond registration or bond cancellation. If a transaction involves more than one property or bond cancellation, fees and charges must be adapted accordingly.`;
-        doc.setFontSize(10);
-        doc.text(disclaimerText, 10, doc.internal.pageSize.getHeight() - 40, { maxWidth: 180 });
-
-        doc.save('transfer-cost-calculation.pdf');
-    }
-
-    function addTableToPdf(doc, resultsTable, startY) {
-        let startX = 10;
-        let rowHeight = 16;
-
-        Array.from(resultsTable.rows).forEach((row, rowIndex) => {
-            Array.from(row.cells).forEach((cell, cellIndex) => {
-                let cellWidth = 95;
-                let positionX = startX + (cellWidth * cellIndex);
-
-                doc.setFontSize(14);
-                if (cellIndex === 0) {
-                    doc.setFont('helvetica', 'bold');
-                } else {
-                    doc.setFont('helvetica', 'normal');
-                }
-
-                doc.text(cell.textContent.trim(), positionX, startY + (rowIndex * rowHeight));
-            });
-        });
-    }
-
-    function createResultsTable(data) {
-        const table = document.createElement('table');
-        
-        const addRow = (desc, amount) => {
-            const row = table.insertRow(-1);
-            let cell = row.insertCell(-1);
-            cell.innerHTML = desc;
-            cell = row.insertCell(-1);
-            cell.innerHTML = amount;
-        };
-
-        addRow('Initial Amount', formatNumber(initialAmount));
-        if (data.transferFees) addRow('Transfer Fees', formatNumber(data.transferFees));
-        if (data.vatOnFees) addRow('15% VAT on Fees', formatNumber(data.vatOnFees));
-        if (data.transferDuty) addRow('Transfer Duty', formatNumber(data.transferDuty));
-        if (data.stampDuty) addRow('Stamp Duty', formatNumber(data.stampDuty));
-        if (data.deedsOfficeFee) addRow('Deeds Office Fee', formatNumber(data.deedsOfficeFee));
-        if (data.sundriesPostagesVAT) addRow('Sundries & Postages + 15% VAT', formatNumber(data.sundriesPostagesVAT));
-        if (data.total) addRow('Total', formatNumber(data.total));
-
-        return table;
     }
 }); 

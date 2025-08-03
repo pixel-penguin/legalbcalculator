@@ -265,7 +265,7 @@
                         <li>📱 Responsive design that works on all devices</li>
                         <li>⚡ Fast API integration with real-time calculations</li>
                         <li>🔧 Easy integration with just a few lines of code</li>
-                        <li>📄 Built-in PDF generation capability</li>
+
                         <li>🌍 Production-ready API endpoint</li>
                     </ul>
                 </div>
@@ -284,10 +284,7 @@
 &lt;div id="calculator-widget-transfer-cost-calculator"&gt;&lt;/div&gt;
                     </div>
 
-                    <h3>3. Optional: Include PDF Generation (for PDF downloads)</h3>
-                    <div class="code-block">
-&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"&gt;&lt;/script&gt;
-                    </div>
+
 
                     <div class="success">
                         <strong>That's it!</strong> Your calculator will automatically initialize when the page loads.
@@ -315,9 +312,6 @@
     
     &lt;!-- Include the widget script --&gt;
     &lt;script src="https://dj4tpjdnz6wyx.cloudfront.net/legal-calculator-widget.js"&gt;&lt;/script&gt;
-    
-    &lt;!-- Optional: Include jsPDF for PDF downloads --&gt;
-    &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"&gt;&lt;/script&gt;
 &lt;/body&gt;
 &lt;/html&gt;
                     </div>
@@ -446,13 +440,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <h3>Error Handling</h3>
                     <p>Network errors and API errors are gracefully handled with user-friendly error messages.</p>
                     
-                    <h3>PDF Generation</h3>
-                    <p>When jsPDF is included, users can download their calculation results as a professional PDF document including:</p>
-                    <ul>
-                        <li>Complete cost breakdown</li>
-                        <li>Input parameters used</li>
-                        <li>Legal disclaimer</li>
-                    </ul>
+
                     
                     <h3>Responsive Design</h3>
                     <p>The widget automatically adapts to different screen sizes and works perfectly on mobile devices.</p>
@@ -468,11 +456,7 @@ function add_transfer_calculator_scripts() {
     wp_enqueue_script('transfer-calculator', 
         'https://dj4tpjdnz6wyx.cloudfront.net/legal-calculator-widget.js', 
         array(), '1.0.0', true);
-    
-    // Optional: Add jsPDF for PDF functionality
-    wp_enqueue_script('jspdf', 
-        'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js', 
-        array(), '2.5.1', true);
+
 }
 add_action('wp_enqueue_scripts', 'add_transfer_calculator_scripts');
 
@@ -490,7 +474,6 @@ add_shortcode('transfer_calculator', 'transfer_calculator_shortcode');
 &lt;!-- Add this to a Code Block in Squarespace --&gt;
 &lt;div id="calculator-widget-transfer-cost-calculator"&gt;&lt;/div&gt;
 &lt;script src="https://dj4tpjdnz6wyx.cloudfront.net/legal-calculator-widget.js"&gt;&lt;/script&gt;
-&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"&gt;&lt;/script&gt;
                     </div>
 
                     <h3>Webflow Integration</h3>
@@ -498,7 +481,52 @@ add_shortcode('transfer_calculator', 'transfer_calculator_shortcode');
 &lt;!-- Add to an Embed element in Webflow --&gt;
 &lt;div id="calculator-widget-transfer-cost-calculator"&gt;&lt;/div&gt;
 &lt;script src="https://dj4tpjdnz6wyx.cloudfront.net/legal-calculator-widget.js"&gt;&lt;/script&gt;
-&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"&gt;&lt;/script&gt;
+                    </div>
+
+                    <h3>Wix Integration</h3>
+                    <p>Follow these steps to add the calculator to your Wix website:</p>
+                    
+                    <h4>Method 1: Using HTML Element (Recommended)</h4>
+                    <ol>
+                        <li>In your Wix Editor, click <strong>+ Add</strong> in the left panel</li>
+                        <li>Go to <strong>Embed Code</strong> → <strong>HTML Element</strong> (NOT iframe)</li>
+                        <li>Drag the HTML Element to your page</li>
+                        <li>Click <strong>Enter Code</strong> and paste the following:</li>
+                    </ol>
+                    
+                    <div class="code-block">
+&lt;div id="calculator-widget-transfer-cost-calculator"&gt;&lt;/div&gt;
+&lt;script src="https://dj4tpjdnz6wyx.cloudfront.net/legal-calculator-widget.js"&gt;&lt;/script&gt;
+                    </div>
+
+                    <h4>Method 2: Using Custom Code (Site-wide)</h4>
+                    <ol>
+                        <li>In your Wix Editor, go to <strong>Settings</strong> → <strong>Custom Code</strong></li>
+                        <li>Click <strong>+ Add Custom Code</strong></li>
+                        <li>Set <strong>Code Type</strong> to <strong>HTML</strong></li>
+                        <li>Choose <strong>All Pages</strong> or specific pages</li>
+                        <li>Set <strong>Place Code in</strong> to <strong>Body - end</strong></li>
+                        <li>Paste this code:</li>
+                    </ol>
+                    
+                    <div class="code-block">
+&lt;script src="https://dj4tpjdnz6wyx.cloudfront.net/legal-calculator-widget.js"&gt;&lt;/script&gt;
+                    </div>
+
+                    <p>Then add an HTML Element anywhere on your page with just the container:</p>
+                    
+                    <div class="code-block">
+&lt;div id="calculator-widget-transfer-cost-calculator"&gt;&lt;/div&gt;
+                    </div>
+
+                    <div class="warning">
+                        <strong>Important:</strong><br>
+                        Use "HTML Element" NOT "HTML iframe" - iframes will prevent the JavaScript from working properly.
+                    </div>
+
+                    <div class="note">
+                        <strong>Wix Tip:</strong><br>
+                        Make sure to set the HTML Element height to at least 600px to accommodate the full calculator and results.
                     </div>
                 </div>
 
@@ -521,12 +549,7 @@ add_shortcode('transfer_calculator', 'transfer_calculator_shortcode');
                         <li>Verify that the purchase price is a valid number</li>
                     </ul>
                     
-                    <h4>PDF download not working</h4>
-                    <ul>
-                        <li>Make sure jsPDF library is included before using the widget</li>
-                        <li>Check for any JavaScript errors in the console</li>
-                        <li>Some browsers may block PDF downloads - ensure popups are allowed</li>
-                    </ul>
+
 
                     <h4>Styling issues</h4>
                     <ul>
@@ -560,7 +583,7 @@ add_shortcode('transfer_calculator', 'transfer_calculator_shortcode');
 
                 <div class="success">
                     <strong>Pro Tip:</strong><br>
-                    Include the jsPDF library to enable PDF download functionality for your users.
+                    The widget is completely self-contained and requires no additional dependencies.
                 </div>
 
                 <div class="warning">
@@ -585,15 +608,14 @@ add_shortcode('transfer_calculator', 'transfer_calculator_shortcode');
                 <li><strong>Select Property Type:</strong> Choose between Sectional Title or Free Standing Erven</li>
                 <li><strong>Select Transfer Date:</strong> Choose the applicable time period for current rates</li>
                 <li><strong>Calculate:</strong> Click the Calculate button to get your results</li>
-                <li><strong>Download PDF:</strong> Optionally download your results as a PDF document</li>
+
             </ol>
         </div>
     </div>
 
     <!-- Include the widget script -->
-    <script src="widget/legal-calculator-widget.js"></script>
+    <script src="https://dj4tpjdnz6wyx.cloudfront.net/legal-calculator-widget.js"></script>
     
-    <!-- Include jsPDF for PDF functionality in demo -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 </body>
 </html> 
