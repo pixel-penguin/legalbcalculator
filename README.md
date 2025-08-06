@@ -117,7 +117,7 @@ POST /calculate
   "transferDuty": 5000.00,
   "stampDuty": 1200.00,
   "deedsOfficeFee": 400.00,
-  "sundriesPostagesVAT": 1265.00,
+  "sundriesPostagesVAT": 1725.00,
   "total": 21665.00
 }
 ```

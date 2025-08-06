@@ -72,7 +72,7 @@ exports.handler = async (event) => {
 
 // Prior to 1 October 2024
 const calculateTransferCostsOlder = (amount, sub_type, dutytype) => {
-    let fee, vat, duty = 0, stamp = 0, office, sundries = 1265, total;
+    let fee, vat, duty = 0, stamp = 0, office, sundries = 1725, total;
 
     // Define office fees based on sub_type
     const office_fee_S = 250;
@@ -165,7 +165,7 @@ const calculateTransferCostsOlder = (amount, sub_type, dutytype) => {
 
 // From 1 October 2024 onwards
 const calculateTransferCostsNewer = (amount, sub_type, dutytype) => {
-    let fee, vat, duty = 0, stamp = 0, office, sundries = 1265, total;
+    let fee, vat, duty = 0, stamp = 0, office, sundries = 1725, total;
 
     // Define office fees based on sub_type
     const office_fee_S = 400;
